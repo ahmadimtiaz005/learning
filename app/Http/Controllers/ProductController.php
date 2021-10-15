@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 
-use App\Http\Request\ValidateProductRequest;
+
+
+use App\Http\Requests\ValidateProductRequest;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use Illuminate\Contracts\Foundation\Application;
@@ -36,9 +38,10 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categories = ProductCategory::all();
+
+        $product_category = ProductCategory::all();
         return view('products.create', [
-            'categories' => $categories,
+            'product_category' => $product_category,
 
         ]);
     }
@@ -54,32 +57,19 @@ class ProductController extends Controller
 //        $this->authorize('create',Customer::class);
 //        $this->authorize('create',Product::class);
 
-//        $getRules = Product::validationRules();
-//        $getRules['photo'] = 'required';
-//        $data = $request->validate($getRules);
-//dd($request);
-        $data = $request->validate([
-
-            'name' => 'required',
-            'slug'=>'required',
-            'price' => 'required',
-            'description' => 'required',
-            'featured_image' => 'nullable',
-//            'product_category_id' => 'nullable',
-        ]);
+        $getRules = Product::validRules();
+        $getRules['photo'] = 'nullable';
+        $data = $request->validate($getRules);
 
         if ($data['photo'] !== null) {
             $data['photo'] = $data['photo']->store('public/photos/');
         }
+        $category = ProductCategory::find($request->input('product_category_id'));
+//        dd($data);
+        $product = $category->products()->create($data);
 
-//        $tags = $request->input('tags');
-//        $category = ProductCategory::query()->findOrFail($request->input('category_id'));
-//        $product = $category->products()->create($data);
-
-        Product::query()->create($data);
-//        $product->tags()->attach($tags);
         return redirect()->route('products.index');
-dd('yes');
+
     }
 
     /**
@@ -105,8 +95,8 @@ dd('yes');
     public function edit($id)
     {
         $product = Product::findorfail($id);
-        $category = ProductCategory::all();
-        return view('products.edit', compact('product', $category));
+        $product_category = ProductCategory::all();
+        return view('products.edit', compact('product', 'product_category'));
     }
 
     /**
@@ -125,7 +115,7 @@ dd('yes');
             'slug'=>'required',
             'price' => 'required',
             'description' => 'required',
-            'featured_image' => 'nullable|image',
+            'photo' => 'nullable|image',
             'product_category_id' => 'required',
         ]);
 

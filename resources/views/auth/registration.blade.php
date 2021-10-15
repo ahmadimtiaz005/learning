@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('content')
+@section('main-content')
 
     <div class="w-full max-w-xs mt-5 ml-4">
         <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" action="{{ route('register.custom') }}" method="POST">

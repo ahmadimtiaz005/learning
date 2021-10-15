@@ -17,13 +17,13 @@
 <div class="w-full">
     <div>
         <div>
-            <h1 class="font-bold text-2xl mt-4">Users</h1>
+            <h1 class="font-bold text-2xl mt-4">Product Category</h1>
 
             <div class="my-4 space-y-3 flex flex-col sm:flex-row sm:justify-between items-center">
 
                 <a href="{{route('product-categories.create')}}"
                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded">
-                    Create New User
+                    Create New Category
                 </a>
 
             </div>
@@ -128,6 +128,6 @@
     </div>
 
 </div>
-
+</div>
 </body>
 </html>

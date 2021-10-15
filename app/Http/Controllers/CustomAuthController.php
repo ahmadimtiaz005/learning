@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+
 
 class CustomAuthController extends Controller
 {
@@ -14,6 +16,7 @@ class CustomAuthController extends Controller
     {
         return view('auth.login');
     }
+
     public function customLogin(Request $request)
     {
         $request->validate([
@@ -22,7 +25,9 @@ class CustomAuthController extends Controller
         ]);
 
         $credentials = $request->only('email', 'password');
-        if (Auth::attempt($credentials)) {
+        $remember = $request->has('remember') ? true : false;
+
+        if (Auth::attempt($credentials, true)) {
             return redirect()->intended('dashboard')
                 ->withSuccess('Signed in');
         }
@@ -44,7 +49,8 @@ class CustomAuthController extends Controller
         ]);
 
         $data = $request->all();
-        $check = $this->create($data);
+        $user = $this->create($data);
+        event(new Registered($user));// Registered::dispatch($user)
 
         return redirect("dashboard")->withSuccess('You have signed-in');
     }
@@ -70,6 +76,7 @@ class CustomAuthController extends Controller
     }
 
     public function signOut() {
+
         Session::flush();
         Auth::logout();
 

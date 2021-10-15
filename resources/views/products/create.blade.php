@@ -1,13 +1,14 @@
 @extends('layouts.app')
 
-@section('content')
+@section('main-content')
     <div class="mt-5">
         <div class="w- max-w-xs  ">
             <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+                  action="{{ route('products.store')}}"
                   method="POST"
-                  action="{{route('products.store')}}"
-            >
+                  enctype="multipart/form-data">
                 @csrf
+
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="name">
                         Name
@@ -21,10 +22,24 @@
                            id="name"
                            name="name"
                            value="{{old('name')}}"
-                           required autofocus
+                           autofocus
                     >
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="slug">
+                        Slug
+                    </label>
 
-                    <p class="text-red-600">{{$errors ->first("name") }}</p>
+                    <input class="shadow appearance-none border
+                 rounded w-full py-2 px-3 text-gray-700 leading-tight
+                 focus:outline-none focus:shadow-outline "
+                           type="text"
+                           placeholder="slug"
+                           id="slug"
+                           name="slug"
+                           value="{{old('slug')}}"
+                           autofocus
+                    >
                 </div>
 
                 <div class="mb-4">
@@ -40,10 +55,9 @@
                            id="price"
                            name="price"
                            value="{{old('price')}}"
-                           required autofocus
+                           autofocus
                     >
 
-                    <p class="text-red-600">{{$errors ->first("price") }}</p>
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="description">
@@ -58,45 +72,37 @@
                            id="description"
                            name="description"
                            value="{{old('description')}}"
-                           required autofocus
+                           autofocus
                     >
 
-                    <p class="text-red-600">{{$errors ->first("description") }}</p>
                 </div>
-{{--                <div class="mb-4">--}}
-{{--                    <label class="block text-gray-700 text-sm font-bold mb-2" for="product_category_id">--}}
-{{--                        product_category_id--}}
-{{--                    </label>--}}
-
-{{--                    <select name="category_id" class=" shadow appearance-none border--}}
-{{--                 rounded w-full py-2 px-3 text-gray-700 leading-tight--}}
-{{--                 focus:outline-none focus:shadow-outline ">--}}
-{{--                        @foreach($categories as $category)--}}
-{{--                            <option value="{{$category->id}}">{{$category->name}}</option>--}}
-{{--                        @endforeach--}}
-{{--                    </select>--}}
-
-
-{{--                    <p class="text-red-600">{{$errors ->first("product_category_id") }}</p>--}}
-{{--                </div>--}}
-
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="featured_image">
-                        featured_image
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="product_category_id">
+                        product_category_id
                     </label>
 
-                    <input class="shadow appearance-none border
+                    <select name="product_category_id" class=" shadow appearance-none border
                  rounded w-full py-2 px-3 text-gray-700 leading-tight
-                 focus:outline-none focus:shadow-outline "
+                 focus:outline-none focus:shadow-outline ">
+                        @foreach($product_category as $category)
+                            <option value="{{$category->id}}">{{$category->name}}</option>
+                        @endforeach
+                    </select>
+
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="photo">
+                        Photo
+                    </label>
+
+                    <input class="mt-3 "
                            type="file"
-                           placeholder="featured_image"
-                           id="featured_image"
-                           name="featured_image"
-                           value="{{old('featured_image')}}"
-                           required autofocus
+                           name="photo"
+                           value="{{old('photo')}}"
                     >
 
-                    <p class="text-red-600">{{$errors ->first("featured_image") }}</p>
+
                 </div>
 
                 <div class="flex items-center justify-between">
@@ -107,6 +113,13 @@
                         Create
                     </button>
                 </div>
+                @if($errors->any())
+                    <ul>
+                        @foreach($errors->all() as $error)
+                            <li> <p class="text-red-600">{{ $error }}</p></li>
+                        @endforeach
+                    </ul>
+                @endif
             </form>
 
         </div>

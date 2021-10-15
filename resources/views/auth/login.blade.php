@@ -1,9 +1,10 @@
 @extends('layouts.app')
 
-@section('content')
+@section('main-content')
     <div class="mt-5">
         <div class="w- max-w-xs  ">
-            <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" method="POST" action="{{ route('login.custom') }}">
+            <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" method="POST"
+                  action="{{ route('login.custom') }}">
                 @csrf
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
@@ -45,9 +46,14 @@
                     >
                         Sign In
                     </button>
-                    <a class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" href="#">
+                    <a class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
+                       href="{{ route('password.request') }}">
                         Forgot Password?
                     </a>
+                </div>
+                <div>
+                    <label for="remember">Remember me</label>
+                    <input type="checkbox" name="remember">
                 </div>
             </form>
 

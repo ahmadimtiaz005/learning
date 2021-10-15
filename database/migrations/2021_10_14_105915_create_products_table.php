@@ -20,7 +20,7 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->string('slug');
             $table->decimal('price')->nullable();
-            $table->string('featured_image')->nullable();
+            $table->string('photo')->nullable();
             $table->string('description')->nullable();
             $table->foreign('product_category_id')
                 ->references('id')
